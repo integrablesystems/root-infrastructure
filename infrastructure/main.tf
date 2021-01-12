@@ -1,5 +1,6 @@
 locals {
-  name = trim(var.fqdn, ".")
+  # Do not change, used in terraform block
+  name = replace(trim(var.fqdn, "."), ".", "-")
 }
 
 locals {
@@ -51,4 +52,41 @@ resource "aws_route53_record" "apex_caa" {
   type    = "CAA"
   ttl     = var.ttl
   records = ["0 issue \"letsencrypt.org\""]
+}
+
+resource "aws_s3_bucket" "terraform_state" {
+  # Do not change, used in terraform block
+  bucket = "${local.name}-terraform-state"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
+  versioning {
+    enabled = true
+  }
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+
+  tags = local.common_tags
+}
+
+resource "aws_dynamodb_table" "terraform_state_locks" {
+  # Do not change, used in terraform block
+  name         = "terraform-state-locks"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LockID"
+
+  attribute {
+    name = "LockID"
+    type = "S"
+  }
+
+  tags = local.common_tags
 }

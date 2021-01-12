@@ -1,4 +1,5 @@
 variable "fqdn" {
+  # Do not change, used in terraform block
   description = "FQDN for the hosted zone"
   type        = string
   default     = "integrable.systems."

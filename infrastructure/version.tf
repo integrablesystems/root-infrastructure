@@ -10,4 +10,12 @@ terraform {
     }
   }
   required_version = ">= 0.14"
+
+  backend "s3" {
+    bucket         = "integrable-systems-terraform-state"
+    key            = "global/terraform.tfstate"
+    region         = "ap-southeast-1"
+    encrypt        = true
+    dynamodb_table = "terraform-state-locks"
+  }
 }
