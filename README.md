@@ -1,3 +1,3 @@
-# `integrable.systems` Root Infrastructure
+# Root Infrastructure
 
-Here we define routes for the `integrable.systems.` zone.
+Routes for the `integrable.systems.` zone.
