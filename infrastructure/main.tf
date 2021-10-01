@@ -27,7 +27,7 @@ resource "aws_route53_record" "www_cname" {
   records = var.www_cname_records
 }
 
-resource "aws_route53_record" "apex" {
+resource "aws_route53_record" "apex_ipv4" {
   zone_id = aws_route53_zone.primary.zone_id
   name    = ""
   type    = "A"
@@ -37,6 +37,17 @@ resource "aws_route53_record" "apex" {
     cidrhost(range, 0)
     # We remove IP ranges that are returned erroneously
     if length(regexall("^192.30.*", range)) == 0
+  ]
+}
+
+resource "aws_route53_record" "apex_ipv6" {
+  zone_id = aws_route53_zone.primary.zone_id
+  name    = ""
+  type    = "AAAA"
+  ttl     = var.ttl
+  records = [
+    for range in data.github_ip_ranges.this.pages_ipv6 :
+    cidrhost(range, 0)
   ]
 }
 
