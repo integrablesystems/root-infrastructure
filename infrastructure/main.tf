@@ -33,7 +33,7 @@ resource "aws_route53_record" "apex" {
   type    = "A"
   ttl     = var.ttl
   records = [
-    for range in data.github_ip_ranges.this.pages :
+    for range in data.github_ip_ranges.this.pages_ipv4 :
     cidrhost(range, 0)
     # We remove IP ranges that are returned erroneously
     if length(regexall("^192.30.*", range)) == 0
