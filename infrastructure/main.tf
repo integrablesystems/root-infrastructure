@@ -3,20 +3,11 @@ locals {
   name = replace(trim(var.fqdn, "."), ".", "-")
 }
 
-locals {
-  common_tags = {
-    Project = local.name
-    Env     = "production"
-    Name    = "${local.name}-root-infrastructure"
-  }
-}
-
 data "github_ip_ranges" "this" {}
 
 resource "aws_route53_zone" "primary" {
   name          = var.fqdn
   force_destroy = "true"
-  tags          = local.common_tags
 }
 
 resource "aws_route53_record" "www_cname" {
