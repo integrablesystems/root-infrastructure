@@ -2,14 +2,14 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.54"
+      version = "~> 4.17"
     }
     github = {
       source  = "integrations/github"
-      version = "~> 4.13"
+      version = "~> 4.26"
     }
   }
-  required_version = ">= 1.0"
+  required_version = ">= 1.2"
 
   backend "s3" {
     bucket         = "integrable-systems-terraform-state"
